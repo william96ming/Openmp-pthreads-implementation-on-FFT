@@ -118,11 +118,11 @@ int main()
 		taskid[t] = t;
 		pthread_create(&threads[t], NULL, calculate_parameter, (void*)taskid[t]);
 	}
-
 	//synchronization
 	for (t = 0; t <= num_loop; t++)
 		pthread_join(threads[t], NULL);
 
+	//calculate FFT
 	for (q = 0; q <= num_loop; q++)
 	{
 		mmax = pow(2, q + 1);
@@ -133,7 +133,8 @@ int main()
 			thread_data_array[t].istep = istep;
 			thread_data_array[t].q = q;
 		}
-		while (count > NUM_threads)
+		//when the loop number is greater than the number of threads
+		while (count > NUM_threads)	
 		{
 			for (t = 0; t < NUM_threads; t++) {
 				thread_data_array[t].thread_id = t;
@@ -144,6 +145,7 @@ int main()
 				pthread_join(threads[t], NULL);
 			count -= NUM_threads;
 		}
+		//run until the loop number is less than the number of threads
 		for (t = 0; t < count; t++) {
 			thread_data_array[t].thread_id = t;
 			thread_data_array[t].m = count - t;
@@ -151,7 +153,6 @@ int main()
 		}			
 		for (t = 0; t < count; t++)
 			pthread_join(threads[t], NULL);
-
 	}
 
 	// Stop measuring time and calculate the elapsed time
@@ -164,4 +165,4 @@ int main()
 	printf("\nFourier components from the DIT algorithm:");
 	for (t = 0; t < 20; t += 2)
 		printf("\n%f %f", data[t + 1], data[t + 2]);
-} // end of dittt()
+}
