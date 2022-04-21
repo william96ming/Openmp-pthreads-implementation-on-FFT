@@ -46,7 +46,7 @@ void *calculate_parameter(void *thread_id) {
 	}
 }
 
-void FFT_compute(void *threadarg) {
+void *FFT_compute(void *threadarg) {
 
 	struct thread_data* my_data;
 	my_data = (struct thread_data*)threadarg;
